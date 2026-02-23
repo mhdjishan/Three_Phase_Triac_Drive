@@ -1,0 +1,27 @@
+[
+   {
+      "directory" : "C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive/CPU1_RAM",
+      "command"   : "clang++ -I\"C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive\" -I\"C:/ti/C2000Ware_6_00_01_00\" -I\"C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive/device\" -I\"C:/ti/C2000Ware_6_00_01_00/driverlib/f28004x/driverlib/\" -I\"C:/ti/ccs2041/ccs/tools/compiler/ti-cgt-c2000_22.6.3.LTS/include\" -DDEBUG -I\"C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive/CPU1_RAM/syscfg\" -DF28004x=1 -xc",
+      "file"      : "C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive/device/device.c"
+   },
+   {
+      "directory" : "C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive/CPU1_RAM",
+      "command"   : "clang++ -I\"C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive\" -I\"C:/ti/C2000Ware_6_00_01_00\" -I\"C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive/device\" -I\"C:/ti/C2000Ware_6_00_01_00/driverlib/f28004x/driverlib/\" -I\"C:/ti/ccs2041/ccs/tools/compiler/ti-cgt-c2000_22.6.3.LTS/include\" -DDEBUG -I\"C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive/CPU1_RAM/syscfg\" -DF28004x=1",
+      "file"      : "C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive/device/f28004x_codestartbranch.asm"
+   },
+   {
+      "directory" : "C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive/CPU1_RAM",
+      "command"   : "clang++ -I\"C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive\" -I\"C:/ti/C2000Ware_6_00_01_00\" -I\"C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive/device\" -I\"C:/ti/C2000Ware_6_00_01_00/driverlib/f28004x/driverlib/\" -I\"C:/ti/ccs2041/ccs/tools/compiler/ti-cgt-c2000_22.6.3.LTS/include\" -DDEBUG -I\"C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive/CPU1_RAM/syscfg\" -DF28004x=1 -xc",
+      "file"      : "C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive/three_phase_triac.c"
+   },
+   {
+      "directory" : "C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive/CPU1_RAM",
+      "command"   : "clang++ -I\"C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive\" -I\"C:/ti/C2000Ware_6_00_01_00\" -I\"C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive/device\" -I\"C:/ti/C2000Ware_6_00_01_00/driverlib/f28004x/driverlib/\" -I\"C:/ti/ccs2041/ccs/tools/compiler/ti-cgt-c2000_22.6.3.LTS/include\" -DDEBUG -I\"C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive/CPU1_RAM/syscfg\" -DF28004x=1 -xc",
+      "file"      : "C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive/CPU1_RAM/syscfg/board.c"
+   },
+   {
+      "directory" : "C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive/CPU1_RAM",
+      "command"   : "clang++ -I\"C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive\" -I\"C:/ti/C2000Ware_6_00_01_00\" -I\"C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive/device\" -I\"C:/ti/C2000Ware_6_00_01_00/driverlib/f28004x/driverlib/\" -I\"C:/ti/ccs2041/ccs/tools/compiler/ti-cgt-c2000_22.6.3.LTS/include\" -DDEBUG -I\"C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive/CPU1_RAM/syscfg\" -DF28004x=1 -xc",
+      "file"      : "C:/Users/Intern 1/workspace_ccstheia/three_phase_triac_drive/CPU1_RAM/syscfg/c2000ware_libraries.c"
+   }
+]
