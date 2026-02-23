@@ -17,7 +17,7 @@ volatile uint32_t FIRE_DELAY_Y = 7000;
 volatile uint32_t FIRE_WIDTH_Y = 390;
 
 volatile uint32_t FIRE_DELAY_B = 7000; 
-volatile uint32_t FIRE_WIDTH_B = 390;
+volatile uint32_t  FIRE_WIDTH_B = 390;
 
 // volatile is used since it is modified in interrupt 
 volatile uint16_t currentDuty = 2500; //give the half of the pwm period to get the 50% duty cycle // calculation : % * period
@@ -296,7 +296,7 @@ __interrupt void epwmSchedulerISR_Y(void)
     else
     {
         // PWM OFF
-        EPWM_forceTripZoneEvent(EPWM1_BASE, EPWM_TZ_FORCE_EVENT_OST);
+        EPWM_forceTripZoneEvent(EPWM5_BASE, EPWM_TZ_FORCE_EVENT_OST);
         schedState_Y = 0;
         // freeze the scheduler
         EPWM_setTimeBaseCounterMode(EPWM1_BASE, EPWM_COUNTER_MODE_STOP_FREEZE);
@@ -318,7 +318,7 @@ __interrupt void epwmSchedulerISR_B(void)
     else
     {
         // PWM OFF
-        EPWM_forceTripZoneEvent(EPWM2_BASE, EPWM_TZ_FORCE_EVENT_OST);
+        EPWM_forceTripZoneEvent(EPWM3_BASE, EPWM_TZ_FORCE_EVENT_OST);
         schedState_B = 0;
         // freeze the scheduler
         EPWM_setTimeBaseCounterMode(EPWM2_BASE, EPWM_COUNTER_MODE_STOP_FREEZE);
@@ -476,7 +476,7 @@ void initepwm_scheduler_R(void)
     EPWM_setTimeBasePeriod(EPWM4_BASE, ZC_PERIOD);
     EPWM_setTimeBaseCounter(EPWM4_BASE, 0);
     EPWM_setTimeBaseCounterMode(EPWM4_BASE, EPWM_COUNTER_MODE_STOP_FREEZE);
-    EPWM_setPhaseShift(EPWM6_BASE, 0);
+    EPWM_setPhaseShift(EPWM4_BASE, 0);
    
     EPWM_setCounterCompareValue(EPWM4_BASE, EPWM_COUNTER_COMPARE_A, FIRE_DELAY_R);
 
