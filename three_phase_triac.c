@@ -36,9 +36,12 @@ volatile uint32_t sum_squares_ac =0;
 volatile float final_rms = 0.0f;
 
 //ADC timer_isr variables
+volatile uint16_t raw_cal = 0 ;
 volatile uint32_t temp_sum_squares = 0;
 volatile uint16_t sample_counter = 0;
 volatile bool data_ready_flag = false;//inside the cpu timmer isr
+volatile uint16_t flatline_counter = 0;
+
 
 
 void initEPWM1_R(void);
@@ -131,7 +134,7 @@ void main(void)
    
     while(1)
     {
-        if(data_ready_flag)
+        if(data_ready_flag == true)
         {
            float mean_square = (float)sum_squares_ac / 200.0f;
            float rms_counts = sqrtf(mean_square);
@@ -216,6 +219,8 @@ void main(void)
 
             }
             sprintf(buffer2, "--Sin RMS: %d \r\n \r\n", (int)final_rms); //  
+            sendSCIText(buffer2);
+            sprintf(buffer2, "--Sin RMS_adc: %d \r\n \r\n", (int)raw_cal); //  
             sendSCIText(buffer2);
             data_ready_flag = false;
         }
@@ -331,22 +336,44 @@ __interrupt void epwmSchedulerISR_B(void)
 //interrupts that run every 100us that timmer 3
 __interrupt void cpuTimer2_ISR(void)
 {
-    uint16_t raw = 0 ;
+    
     int16_t adj;
 
+    // if(flatline_counter > 100) 
+    // {
+    //     sensor_fault = true;
+    //     rms_flag = false; // Force safety shutdown
+    //     EPWM_forceTripZoneEvent(EPWM6_BASE, EPWM_TZ_FORCE_EVENT_OST);
+    //     EPWM_forceTripZoneEvent(EPWM5_BASE, EPWM_TZ_FORCE_EVENT_OST);
+    //     EPWM_forceTripZoneEvent(EPWM3_BASE, EPWM_TZ_FORCE_EVENT_OST);
+    //     flatline_counter = 0;
+    // }
+    uint16_t raw = 0 ;
     readADC(&raw);
+    raw_cal = raw;
+     if(raw_cal <= 5) 
+    {
+        flatline_counter++;
+    }
     adj = (int16_t)raw - ADC_OFFSET; // here is your offset value
     temp_sum_squares += (uint32_t)((int32_t)adj * (int32_t)adj);
     sample_counter++;
-   
-    if(sample_counter >= 200)
+        
+    if(sample_counter >= 200 && flatline_counter < 100)
     {
         sum_squares_ac = temp_sum_squares; // Transfer to main variable
         sample_counter = 0;
         temp_sum_squares = 0;
-        data_ready_flag = true;
-                 // Tell main loop to calculate RMS
+        flatline_counter =0;
+        data_ready_flag = true; // Tell main loop to calculate RMS
     }
+    else 
+    {
+     sample_counter = 0;
+        temp_sum_squares = 0;
+        flatline_counter =0;
+    }
+    
     Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP1);
 }
 
