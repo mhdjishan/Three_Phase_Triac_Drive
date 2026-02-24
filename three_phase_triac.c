@@ -32,7 +32,7 @@ volatile uint16_t schedState_B = 0;
 //rms calculation for elevated sin
 // 2048 counts = 325V. Scale = 325/2048 = 0.15869
 const float VOLTS_PER_COUNT = 0.15869f;
-volatile uint32_t sum_squares_ac =0;
+volatile uint32_t sum_squares_ac = 0;
 volatile float final_rms = 0.0f;
 
 //ADC timer_isr variables
@@ -334,47 +334,41 @@ __interrupt void epwmSchedulerISR_B(void)
 }
 
 //interrupts that run every 100us that timmer 3
+
 __interrupt void cpuTimer2_ISR(void)
 {
-    
     int16_t adj;
-
-    // if(flatline_counter > 100) 
-    // {
-    //     sensor_fault = true;
-    //     rms_flag = false; // Force safety shutdown
-    //     EPWM_forceTripZoneEvent(EPWM6_BASE, EPWM_TZ_FORCE_EVENT_OST);
-    //     EPWM_forceTripZoneEvent(EPWM5_BASE, EPWM_TZ_FORCE_EVENT_OST);
-    //     EPWM_forceTripZoneEvent(EPWM3_BASE, EPWM_TZ_FORCE_EVENT_OST);
-    //     flatline_counter = 0;
-    // }
-    uint16_t raw = 0 ;
+    uint16_t raw = 0;
     readADC(&raw);
     raw_cal = raw;
-     if(raw_cal <= 5) 
+
+    // Check for flatline (sensor fault detection)
+    if(raw_cal <= 120) 
     {
         flatline_counter++;
     }
-    adj = (int16_t)raw - ADC_OFFSET; // here is your offset value
+
+    adj = (int16_t)raw - ADC_OFFSET;
     temp_sum_squares += (uint32_t)((int32_t)adj * (int32_t)adj);
     sample_counter++;
-        
-    if(sample_counter >= 200 && flatline_counter < 100)
+
+    if(sample_counter >= 200)
     {
-        sum_squares_ac = temp_sum_squares; // Transfer to main variable
+        // 1. Check fault condition BEFORE sending the value and resetting 
+        if (flatline_counter < 150)
+        {
+            sum_squares_ac = temp_sum_squares; 
+        }
+        else 
+        {
+            sum_squares_ac = 0; 
+        }
+        // 2. Reset accumulators for the next window
         sample_counter = 0;
         temp_sum_squares = 0;
-        flatline_counter =0;
-        data_ready_flag = true; // Tell main loop to calculate RMS
+        flatline_counter = 0; 
+        data_ready_flag = true;
     }
-    else 
-    {
-     sample_counter = 0;
-        temp_sum_squares = 0;
-        flatline_counter =0;
-    }
-    
-    Interrupt_clearACKGroup(INTERRUPT_ACK_GROUP1);
 }
 
 
@@ -388,7 +382,7 @@ void readADC(uint16_t *result1)
 }    
 
 
-//adc initializationfor output and input
+//adc initialization
 void initADC(void)
 {
     SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_ADCA);
@@ -451,7 +445,8 @@ void initEPWM1_R(void)
 
     EPWM_setTripZoneAction(EPWM6_BASE, EPWM_TZ_ACTION_EVENT_TZA, EPWM_TZ_ACTION_LOW);
     EPWM_setTripZoneAction(EPWM6_BASE, EPWM_TZ_ACTION_EVENT_TZB, EPWM_TZ_ACTION_LOW);
-    EPWM_clearTripZoneFlag(EPWM6_BASE, EPWM_TZ_FLAG_OST);
+    // EPWM_clearTripZoneFlag(EPWM6_BASE, EPWM_TZ_FLAG_OST);
+    EPWM_forceTripZoneEvent(EPWM6_BASE, EPWM_TZ_FORCE_EVENT_OST); 
 }
 
 
@@ -472,7 +467,8 @@ void initEPWM2_Y  (void)
 
     EPWM_setTripZoneAction(EPWM5_BASE, EPWM_TZ_ACTION_EVENT_TZA, EPWM_TZ_ACTION_LOW);
     EPWM_setTripZoneAction(EPWM5_BASE, EPWM_TZ_ACTION_EVENT_TZB, EPWM_TZ_ACTION_LOW);
-    EPWM_clearTripZoneFlag(EPWM5_BASE, EPWM_TZ_FLAG_OST);
+    // EPWM_clearTripZoneFlag(EPWM5_BASE, EPWM_TZ_FLAG_OST);
+    EPWM_forceTripZoneEvent(EPWM5_BASE, EPWM_TZ_FORCE_EVENT_OST); 
 }
 
 void initEPWM3_B (void)
@@ -492,7 +488,8 @@ void initEPWM3_B (void)
 
     EPWM_setTripZoneAction(EPWM3_BASE, EPWM_TZ_ACTION_EVENT_TZA, EPWM_TZ_ACTION_LOW);
     EPWM_setTripZoneAction(EPWM3_BASE, EPWM_TZ_ACTION_EVENT_TZB, EPWM_TZ_ACTION_LOW);
-    EPWM_clearTripZoneFlag(EPWM3_BASE, EPWM_TZ_FLAG_OST);
+    //EPWM_clearTripZoneFlag(EPWM3_BASE, EPWM_TZ_FLAG_OST);
+    EPWM_forceTripZoneEvent(EPWM3_BASE, EPWM_TZ_FORCE_EVENT_OST); 
 }
 
 
