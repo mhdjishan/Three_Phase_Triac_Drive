@@ -343,7 +343,7 @@ __interrupt void cpuTimer2_ISR(void)
     raw_cal = raw;
 
     // Check for flatline (sensor fault detection)
-    if(raw_cal <= 120) 
+    if(raw_cal <= 150) 
     {
         flatline_counter++;
     }
